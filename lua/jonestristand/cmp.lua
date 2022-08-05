@@ -97,16 +97,18 @@ cmp.setup {
     fields = { "kind", "abbr", "menu" },
     format = function(entry, vim_item)
       -- Kind icons
-      local kind_text = require("lspkind").cmp_format({ mode="text", maxwidth=50 })(entry, vim_item) 
-      vim_item.menu = "[" .. kind_text.kind .. "]"
+
+      pcall(function()
+        local compl_item = entry:get_completion_item()
+        if entry.source.source.client.name == "clangd" and compl_item.detail then
+          vim_item.menu = compl_item.detail
+        else
+          local kind_text = require("lspkind").cmp_format({ mode="text", maxwidth=50 })(entry, vim_item) 
+          vim_item.menu = "[" .. kind_text.kind .. "]"
+        end
+      end)
       vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
-      -- vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
---      vim_item.menu = ({
---        nvim_lsp = "[LSP]",
---        luasnip = "[Snippet]",
---        buffer = "[Buffer]",
---        path = "[Path]",
---      })[entry.source.name]
+
       return vim_item
     end,
   },
@@ -125,7 +127,6 @@ cmp.setup {
       border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
     },
     completion = {
-      winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
       col_offset = -3,
       side_padding = 0
     }
