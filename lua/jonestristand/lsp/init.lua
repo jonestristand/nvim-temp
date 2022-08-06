@@ -15,6 +15,17 @@ masonLspConfig.setup({
   automatic_installation = true
 })
 
+require "lsp_signature".setup({
+  bind = true, -- This is mandatory, otherwise border config won't get registered.
+  handler_opts = {
+    border = "rounded"
+  },
+  -- floating_window = false,
+  transparency = 0
+})
+
+vim.cmd [[ hi default FloatBorder guifg=#777777 ]]
+
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }

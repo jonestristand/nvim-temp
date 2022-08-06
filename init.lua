@@ -18,6 +18,7 @@ require("jonestristand.telescope")
 require("jonestristand.project")
 
 require("jonestristand.comment")
+require("jonestristand.autopairs")
 require("jonestristand.gitsigns")
 require("jonestristand.indentline")
 require("jonestristand.toggleterm")
